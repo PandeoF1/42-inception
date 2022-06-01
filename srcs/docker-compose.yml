@@ -51,6 +51,7 @@ services:
     build:
       context: ./requirements/wordpress
       args:
+       - WP_RD_HOST_A=${WP_RD_HOST}
        - WP_DB_NAME_A=${WP_DB_NAME}
        - WP_DB_LOGIN_A=${WP_DB_LOGIN}
        - WP_DB_PASSWORD_A=${WP_DB_PASSWORD}
@@ -58,6 +59,7 @@ services:
     env_file:
       - .env
     depends_on:
+      - redis
       - mariadb
     volumes:
       - wp:/var/www/
@@ -107,7 +109,15 @@ services:
     ports:
       - "21:21"
     volumes:
-      - wp:/ftp
+      - wp:/var/www/
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  redis:
+    container_name: redis
+    build:
+      context: ./requirements/redis
     networks:
       - app-network
     restart: unless-stopped

@@ -13,6 +13,13 @@ define('AUTH_SALT',        '>eX1*hly+,!f<<n1icTyla|MQi*|#_n{auFx+;mfyAwM[dvD{w1O
 define('SECURE_AUTH_SALT', '%uHMhw~C/!0L3h9emJ9YkMER{Ua?k%8/|ZNce!5<XM6?Q+)^v6ex):t&WxIq+@Pi');
 define('LOGGED_IN_SALT',   'nD*TTw#tk+uO{@iZ+YOHN`&*kuU@NMVSk/419Jr,,%Dfl-g?YdAi;` vW3N1FPs/');
 define('NONCE_SALT',       '+f=j&zTc0Pv8#JZKbQ96S1U!& <_tuapL!C9n_^Yy&$2Q*,,`{x2~l.?q#ZScOF+');
+/* Redis */
+define( 'WP_REDIS_HOST', 'redis_to_remove' );
+define( 'WP_REDIS_PORT', 6379 );
+define( 'WP_REDIS_TIMEOUT', 1 );
+define( 'WP_REDIS_READ_TIMEOUT', 1 );
+define( 'WP_REDIS_DATABASE', 0 );
+
 $table_prefix = 'wp_';
 define( 'WP_DEBUG', false );
 if ( ! defined( 'ABSPATH' ) ) {

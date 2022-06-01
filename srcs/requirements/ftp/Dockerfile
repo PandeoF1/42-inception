@@ -5,12 +5,17 @@ ARG FTP_PWD_A
 ENV FTP_USR=$FTP_USR_A
 ENV FTP_PWD=$FTP_PWD_A
 
+RUN apt update && apt install -y vsftpd
+
 COPY ./conf/vsftpd.conf /etc/vsftpd/vsftpd.conf
 COPY ./conf/vsftpd.conf /etc/vsftpd.conf
 
-RUN apt update && apt install -y vsftpd
-
-RUN adduser $FTP_USR --disabled-password && echo "$FTP_USR:$FTP_PWD" >> /usr/sbin/chpasswd && echo $FTP_USR >> /etc/vsftpd.userlist
+RUN adduser ${FTP_USR} --disabled-password
+RUN echo "${FTP_USR}:${FTP_PWD}" | /usr/sbin/chpasswd
+RUN echo ${FTP_USR} >>  /etc/vsftpd.userlist
+RUN mkdir -p /var/www
+RUN chown -R $FTP_USR:$FTP_USR /var/www/
+RUN mkdir -p /var/run/vsftpd/empty && chmod 555 -R /var/run/vsftpd/empty
 
 EXPOSE 21
 
