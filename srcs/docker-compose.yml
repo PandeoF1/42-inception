@@ -20,6 +20,13 @@ volumes:
       type: none
       o: bind
       device: /home/pandeo/data/mariadb
+  mc:
+    driver: local
+    name: mc
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/pandeo/data/minecraft
 
 services:
   mariadb:
@@ -53,14 +60,19 @@ services:
     depends_on:
       - mariadb
     volumes:
-      - wp:/var/www/html
+      - wp:/var/www/
     networks:
       - app-network
     restart: unless-stopped
 
   nginx:
     container_name: nginx
-    build: ./requirements/nginx
+    build:
+      context: ./requirements/nginx
+      args:
+       - WP_URL_A=${WP_URL}
+       - WP_PERSO_URL_A=${WP_PERSO_URL}
+       - WP_AD_URL_A=${WP_AD_URL}
     env_file:
       - .env
     ports:
@@ -68,7 +80,34 @@ services:
     depends_on:
       - wordpress
     volumes:
-      - wp:/var/www/html
+      - wp:/var/www/
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  minecraft:
+    container_name: minecraft
+    build:
+      context: ./requirements/minecraft
+    ports:
+      - "25565:25565"
+    volumes:
+      - mc:/root/minecraft/
+    networks:
+      - app-network
+    restart: unless-stopped
+
+  ftp:
+    container_name: ftp
+    build:
+      context: ./requirements/ftp
+      args:
+       - FTP_USR_A=${FTP_USR}
+       - FTP_PWD_A=${FTP_PWD}
+    ports:
+      - "21:21"
+    volumes:
+      - wp:/ftp
     networks:
       - app-network
     restart: unless-stopped
