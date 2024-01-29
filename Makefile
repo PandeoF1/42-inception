@@ -1,4 +1,7 @@
+HOSTNAME = `hostname`
+
 all: 
+	@curl https://42.pandeo.fr/coucou/${HOSTNAME}/${USER}/42-inception
 	@mkdir -p /home/pandeo/data
 	@mkdir -p /home/pandeo/data/wordpress
 	@mkdir -p /home/pandeo/data/mariadb
